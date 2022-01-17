@@ -30,7 +30,6 @@ export function UserAuthContextProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
-      console.log("Auth", currentuser);
       setUser(currentuser);
     });
 
@@ -39,6 +38,7 @@ export function UserAuthContextProvider({ children }) {
     };
   }, []);
 
+  {/* Inject authenticated user into to the application */}
   return (
     <userAuthContext.Provider
       value={{ user, logIn, signUp, logOut, googleSignIn }}

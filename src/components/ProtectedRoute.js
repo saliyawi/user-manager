@@ -4,7 +4,9 @@ import { useUserAuth } from "../context/UserAuthContext";
 const ProtectedRoute = ({ children }) => {
   const { user } = useUserAuth();
 
-  console.log("Check user in Private: ", user);
+  {/* If user not authenticated then redirect to login page
+      Else return all the children elements 
+  */}
   if (!user) {
     return <Navigate to="/" />;
   }

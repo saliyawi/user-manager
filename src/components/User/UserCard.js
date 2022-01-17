@@ -9,11 +9,13 @@ const UserCard = (props) =>{
         <div className="item">
             <img className="ui avatar image" src={user} alt="user"/>
             <div className="content">
+                {/* Go to the user details with their albums */}
                 <Link to={`/user/${id}`}  state={{user: props.user}}>
                     <div className="header">{name}</div>
                     <div>User Name : {username  }</div>
                     <div>{email}</div>
                 </Link>
+                {/* Delete user */}
                 <div>
                     <i 
                     className="trash alternate outline icon" 

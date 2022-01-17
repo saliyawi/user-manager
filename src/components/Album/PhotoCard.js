@@ -1,5 +1,6 @@
 import React from "react";
 
+{/* Component to show Photo card */}
 const PhotoCard = (props) => {
     const { id, title, thumbnailUrl } = props.data;
 

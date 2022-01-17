@@ -10,11 +10,13 @@ const UserAlbums = () =>{
     const { user } = location.state;
     const [albums, setAlbums] = useState([]);
 
+    {/* Request to get all albums for the given userid */}
     const retrieveUserAlbums = async() =>{
         const response = await api.get(`/albums?userId=${user.id}`);
         return response.data;
     }
 
+    {/* Retrieve user albums whenever user changed */}
     useEffect(()=>{
         const getUserAlbums = async () => {
           const userAlbums = await retrieveUserAlbums();
@@ -24,6 +26,7 @@ const UserAlbums = () =>{
         getUserAlbums();
     }, [user.id])
 
+    {/* Display the user's Albums in Cards */}
     const renderAlbumList = albums.map((album) => {
         return  <AlbumCard key={album.id} album={album} user={user}/>;     
     });
@@ -31,11 +34,13 @@ const UserAlbums = () =>{
     return(
         <div className="main">
             <div className="center-div" style={{paddingTop:"50px"}}>
+                {/* Go back to the user list */}
                <Link to="/users">
                     <button className="ui button blue center">Back to User List</button>
                </Link>
             </div>
             <h2>User Albums</h2>
+            {/* Display the user list  */}
             <div className="ui cards" style={{paddingTop:"20px"}}>
                 {renderAlbumList.length > 0 
                   ? renderAlbumList

@@ -24,11 +24,14 @@ const Signup = () => {
 
   return (
     <>
+    {/* If user doesn't have an account, then can signup 
+        in this form  */}
       <div className="p-4 box">
         <h2 className="mb-3">Firebase Auth Signup</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
+            {/* Sign up email address */}
             <Form.Control
               type="email"
               placeholder="Email address"
@@ -37,6 +40,7 @@ const Signup = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
+            {/* Signup password */}
             <Form.Control
               type="password"
               placeholder="Password"
@@ -45,12 +49,14 @@ const Signup = () => {
           </Form.Group>
 
           <div className="d-grid gap-2">
+            {/* Signup button */}
             <Button variant="primary" type="Submit">
               Sign up
             </Button>
           </div>
         </Form>
       </div>
+      {/* If user have an account then sign in with this link */}
       <div className="p-4 box mt-3 text-center">
         Already have an account? <Link to="/">Log In</Link>
       </div>

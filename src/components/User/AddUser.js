@@ -18,11 +18,12 @@ class AddUser extends React.Component{
     }
 
     render(){
-
+        {/* Add new user here */}
         return(
             <div className="ui fluid main container">
                 <h2>Add User</h2>
                 <form className="ui form" onSubmit={this.addUser}>
+                    {/* User's name */}
                     <div className="field">
                         <label>Name</label>
                         <input 
@@ -33,6 +34,7 @@ class AddUser extends React.Component{
                             onChange={ (e) => this.setState({name: e.target.value})}
                         />
                     </div>
+                    {/* User's email address */}
                     <div className="field">
                         <label>Email</label>
                         <input 
@@ -43,6 +45,7 @@ class AddUser extends React.Component{
                             onChange={ (e) => this.setState({email : e.target.value})}
                         />
                     </div>
+                    {/* Add button to add new user */}
                     <button className="ui button blue">Add</button>
                 </form>
 

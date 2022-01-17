@@ -38,15 +38,17 @@ const Login = () => {
       <div className="p-5 box" style={{width:"50%"}}>
         <h2 className="mb-3">Firebase Auth Login</h2>
         {error && <Alert variant="danger">{error}</Alert>}
+        {/* Show the Google Login Form */}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
+            {/* Enter the Email address  */}
             <Form.Control
               type="email"
               placeholder="Email address"
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
-
+          {/* Enter the password */}
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Control
               type="password"
@@ -55,6 +57,7 @@ const Login = () => {
             />
           </Form.Group>
 
+          {/* Login button */}
           <div className="d-grid gap-2">
             <Button variant="primary" type="Submit">
               Log In
@@ -63,6 +66,7 @@ const Login = () => {
         </Form>
         <hr />
         <div>
+          {/* Google button for SignIn */}
           <GoogleButton
             className="g-btn"
             type="dark"
@@ -70,6 +74,7 @@ const Login = () => {
           />
         </div>
       </div>
+      {/* Google SignUp link */}
       <div className="p-4 box mt-3 text-center" style={{width:"50%"}}>
         Don't have an account? <Link to="/signup">Sign up</Link>
       </div>
