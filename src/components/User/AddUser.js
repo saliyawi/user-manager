@@ -1,30 +1,27 @@
 import React from "react";
 
-class AddContact extends React.Component{
+class AddUser extends React.Component{
 
     state={
         name:"",
         email:""
     }
-
     
     addUser = (e) =>{
         e.preventDefault();
 
         if(this.state.name === "" || this.state.email === ""){
-            alert ("All the fields are mandatory");
             return;
         }
-        this.props.addContactHandler(this.state);
+        this.props.addUserHandler(this.state);
         this.setState ({name:"", email:""});
-        // this.props.history.push("/"); 
     }
 
     render(){
 
         return(
             <div className="ui fluid main container">
-                <h2>Add Contact</h2>
+                <h2>Add User</h2>
                 <form className="ui form" onSubmit={this.addUser}>
                     <div className="field">
                         <label>Name</label>
@@ -54,4 +51,4 @@ class AddContact extends React.Component{
     }
 }
 
-export default AddContact;
+export default AddUser;

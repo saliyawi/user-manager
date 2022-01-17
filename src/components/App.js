@@ -1,109 +1,120 @@
-import React,{useState, useEffect} from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import uniqid from 'uniqid';
-import api from '../api/contacts';
+import api from '../api/users';
 import './App.css';
 import Header from './Header';
-import AddContact from './AddContact';
-import EditContact from './EditContact';
-import ContactList from './ContactList';
-import ContactDetail from './ContactDetail';
+import AddUser from './User/AddUser';
+import UserList from './User/UserList';
+import UserAlbums from './User/UserAlbums';
+import AlbumPhotos from './Album/AlbumPhotos';
+
+import Login from "./Login";
+import Signup from "./Signup";
+import ProtectedRoute from "./ProtectedRoute";
+import { UserAuthContextProvider } from "../context/UserAuthContext";
 
 function App() {
 
-  const LOCAL_STORAGE_KEY = "contacts";
-  const [contacts, setContacts] = useState([]);
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-  // RetrieveContacts
-  const retrieveContacts = async () =>{
+
+  const retrieveUsers = async () => {
     const response = await api.get("/users");
     return response.data;
   }
 
-  const addContactHandler = async (contact) =>{
+  const addUserHandler = async (user) => {
     const request = {
       id: uniqid(),
-      ...contact,
+      ...users,
     }
 
     const response = await api.post("/users", request)
-    setContacts([...contacts, response.data]);
+    setUsers([...users, response.data]);
   }
 
-  const updateContactHandler = () =>{
-
-  }
-
-  const removeContactHandler = async (id) =>{
+  const removeUserHandler = async (id) => {
 
     await api.delete(`/users/${id}`);
-    const newContactList = contacts.filter((contact)=>{
-      return contact.id !== id;
+    const newUserList = users.filter((user) => {
+      return user.id !== id;
     });
 
-    setContacts(newContactList);
+    setUsers(newUserList);
   }
 
   const searchHandler = (searchTerm) => {
     setSearchTerm(searchTerm);
 
-    if(searchTerm !== ''){
-      const newContactList = contacts.filter((contact) => {
-          return Object.values(contact.username)
-            .join("")
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
+    if (searchTerm !== '') {
+      const newUserList = users.filter((user) => {
+        return Object.values(user.username)
+          .join("")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
       });
-      setSearchResults(newContactList);
+      setSearchResults(newUserList);
     } else {
-      setSearchResults(contacts);
+      setSearchResults(users);
     }
   }
 
-  useEffect(()=>{
-    // const retriveContact =  JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    // if(retriveContact) setContacts(retriveContact);
-    const getAllContacts = async () => {
-      const allContacts = await retrieveContacts();
-      if(allContacts) setContacts(allContacts);
+  useEffect(() => {
+    const getAllUsers = async () => {
+      const allUsers = await retrieveUsers();
+      if (allUsers) setUsers(allUsers);
     };
 
-    getAllContacts();
+    getAllUsers();
   }, [])
 
-  useEffect(()=>{
-      //localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
-  }, [contacts])
 
   return (
     <div className="ui container">
-      <Router>
-        <Header/>
-          <Routes>
-            <Route 
-              path="/" 
-              element={<ContactList 
-                        contacts={searchTerm.length < 1 ? contacts : searchResults} 
-                        getContactId={removeContactHandler}
-                        term={searchTerm}
-                        searchKeyword={searchHandler}
-                        />}
-            />
-            <Route
-              path="/add" 
-              element={<AddContact addContactHandler={addContactHandler}/>}
-            />
-            {/* <Route path="/edit/:id" element={<EditContact updateContactHandler={updateContactHandler}/>}/> */}
-            <Route 
-              path="/contact/:id" 
-              element={<ContactDetail/>} 
-            />
-          </Routes>
-        {/* <AddContact addContactHandler={addContactHandler}/>
-        <ContactList contacts={contacts} getContactId={removeContactHandler}/> */}
-      </Router>
+      <Header />
+      <UserAuthContextProvider>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <UserList
+                  users={searchTerm.length < 1 ? users : searchResults}
+                  getUserId={removeUserHandler}
+                  term={searchTerm}
+                  searchKeyword={searchHandler}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add"
+            element={
+              <ProtectedRoute>
+                <AddUser addUserHandler={addUserHandler} />
+              </ProtectedRoute>}
+          />
+          <Route
+            path="/user/:id"
+            element={
+              <ProtectedRoute>
+                <UserAlbums />
+              </ProtectedRoute>}
+          />
+          <Route
+            path="/photos/:id"
+            element={
+              <ProtectedRoute>
+                <AlbumPhotos />
+              </ProtectedRoute>}
+          />
+        </Routes>
+      </UserAuthContextProvider>
     </div>
   );
 }
